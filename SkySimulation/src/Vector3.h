@@ -34,3 +34,27 @@ public:
 	}
 	T x, y, z;
 };
+
+// Method to normalise the vector
+template<typename T>
+void normalize(Vector3<T>& vec)
+{
+	T len2 = vec.length();
+	if (len2 > 0)
+	{
+		T invLen = 1 / std::sqrt(len2);
+		vec.x *= invLen;
+		vec.y *= invLen;
+		vec.z *= invLen;
+	}
+}
+
+// Adding Dot Product
+template<typename T>
+T dot(const Vector3<T>& va, const Vector3<T>& vb)
+{
+	return va.x*vb.x + va.y*vb.y + va.z*vb.z;
+}
+
+// Adding a typedef
+using Vec3f = Vector3<float>;
