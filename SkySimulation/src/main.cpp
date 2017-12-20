@@ -17,11 +17,11 @@ void RenderSkyDome_FishEyeCamera(const Vec3f& sunDir, const char *filename)
 	memset(image, 0x0, sizeof(Vec3f) * width * height);
 
 	// Main Render loop
-	for (unsigned j = 0; j < height; j++)
+	for (unsigned j = 0; j < height; ++j)
 	{
 		// TODO: What is this y?
 		float y = 2.f*(j + 0.5f) / float(height - 1) - 1.f;
-		for (unsigned i = 0; i < width; i++)
+		for (unsigned i = 0; i < width; ++i, ++p)
 		{
 			// TODO: What is this x?
 			float x = 2.f*(i + 0.5f) / float(width - 1) - 1.f;
@@ -30,7 +30,7 @@ void RenderSkyDome_FishEyeCamera(const Vec3f& sunDir, const char *filename)
 			{
 				float phi = std::atan2(y, x);
 				float theta = std::acos(1 - z2);
-				Vec3f dir(sin(theta*cos(phi)), cos(theta),
+				Vec3f dir(sin(theta)*cos(phi), cos(theta),
 					sin(theta)*sin(phi));
 				// 1 meter above sea level
 				*p = atmosphere.ComputeIncidentLight(Vec3f(0, atmosphere.mEarthRadius + 1, 0), dir, 0, kInfinity);
@@ -81,6 +81,7 @@ void RenderImageSequence(unsigned int numOfAngles)
 
 void main()
 {
+	// 128
 	unsigned int nangles = 128;
 	RenderImageSequence(nangles);
 }
