@@ -4,6 +4,7 @@
 #include <random>
 #include <limits>
 #include <cmath>
+#include <fstream>
 
 #include "Atmosphere.h"
 #include "Vector3.h"
@@ -107,5 +108,28 @@ namespace Utils
 			}
 			fprintf(stderr, "\b\b\b\b\%3d%c", (int)(100 * j / (width - 1)), '%');
 		}
+
+		std::cout << "\b\b\b\b" << ((std::chrono::duration<float>)(std::chrono::high_resolution_clock::now() - t0)).count() << " seconds" << std::endl;
+
+		// Rendering the image out to a ppm file
+		std::ofstream ofs(filename, std::ios::out | std::ios::binary);
+		ofs << "P6\n" << width << " " << height << "\n255\n";
+		p = image;
+		for (unsigned j = 0; j < height; ++j)
+		{
+			for (unsigned i = 0; i < width; ++i, ++p)
+			{
+				// Apply Tone mapping
+				(*p)[0] = (*p)[0] < 1.413f ? pow((*p)[0] * 0.38317f, 1.0f / 2.2f) : 1.0f - exp(-(*p)[0]);
+				(*p)[1] = (*p)[1] < 1.413f ? pow((*p)[1] * 0.38317f, 1.0f / 2.2f) : 1.0f - exp(-(*p)[1]);
+				(*p)[2] = (*p)[2] < 1.413f ? pow((*p)[2] * 0.38317f, 1.0f / 2.2f) : 1.0f - exp(-(*p)[2]);
+
+				ofs << (unsigned char)(std::min(1.f, (*p)[0]) * 255)
+					<< (unsigned char)(std::min(1.f, (*p)[1]) * 255)
+					<< (unsigned char)(std::min(1.f, (*p)[2]) * 255);
+			}
+		}
+		ofs.close();
+		delete[] image;
 	}
 }
