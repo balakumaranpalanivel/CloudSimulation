@@ -21,6 +21,10 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Atmosphere.h" />
+    <ClInclude Include="src\Vector3.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F3C1CC78-8484-4D6B-A7A2-9995FF10708C}</ProjectGuid>
